@@ -1,5 +1,5 @@
-import HomePage from '../pages/HomePage.tsx'
+import { AppRoutes } from './AppRoutes.tsx'
 
 export default function App() {
-  return <HomePage />
+  return <AppRoutes />
 }
