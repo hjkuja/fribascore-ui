@@ -1,0 +1,61 @@
+.course-details {
+  max-width: 28rem;
+}
+
+.course-details__name {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.course-details__meta {
+  margin: 0 0 1.25rem 0;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.course-details__holes {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.course-details__holes th,
+.course-details__holes td {
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+}
+
+.course-details__holes th {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.course-details__holes td {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.course-details__holes tbody tr:last-child td {
+  border-bottom: none;
+}
+
+@media (prefers-color-scheme: light) {
+  .course-details__meta {
+    color: rgba(0, 0, 0, 0.65);
+  }
+
+  .course-details__holes th,
+  .course-details__holes td {
+    border-bottom-color: rgba(0, 0, 0, 0.12);
+  }
+
+  .course-details__holes th {
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  .course-details__holes td {
+    color: rgba(0, 0, 0, 0.9);
+  }
+}

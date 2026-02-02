@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import type { Course } from "../../types/course";
 import "./CourseList.css";
 
@@ -24,12 +25,12 @@ export function CourseList({ courses }: CourseListProps) {
     <ul className="course-list" aria-label="Course list">
       {courses.map((course) => (
         <li key={course.id} className="course-list__item">
-          <div className="course-list__card">
+          <Link to={`/courses/${course.id}`} className="course-list__card">
             <h2 className="course-list__name">{course.name}</h2>
             <p className="course-list__meta">
               {formatHoleCount(course.holes.length)} · {totalLength(course.holes)} m total
             </p>
-          </div>
+          </Link>
         </li>
       ))}
     </ul>

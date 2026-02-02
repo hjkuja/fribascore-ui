@@ -13,6 +13,22 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.page-back {
+  margin: 0 0 1rem 0;
+  font-size: 0.9375rem;
+}
+
+.page-back a {
+  color: inherit;
+  text-decoration: none;
+  opacity: 0.85;
+}
+
+.page-back a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
