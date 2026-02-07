@@ -1,4 +1,5 @@
 import type { Course } from "../../types/course";
+import { Link } from "react-router-dom";
 import "./CourseDetails.css";
 
 interface CourseDetailsProps {
@@ -17,6 +18,10 @@ export function CourseDetails({ course }: CourseDetailsProps) {
       <h1 className="course-details__name">{course.name}</h1>
       <p className="course-details__meta">
         {course.holes.length} {course.holes.length === 1 ? "hole" : "holes"} · {total} m total
+      </p>
+
+      <p>
+        <Link to={`/courses/${course.id}/start-round`} className="button">Start Round</Link>
       </p>
 
       <table className="course-details__holes" aria-label="Hole information">

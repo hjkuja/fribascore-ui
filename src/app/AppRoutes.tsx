@@ -3,6 +3,7 @@ import { AppLayout } from "./AppLayout";
 import HomePage from "../pages/HomePage";
 import Courses from "../pages/Courses";
 import CourseDetailsPage from "../pages/CourseDetailsPage";
+import StartRound from "../pages/StartRound";
 
 export function AppRoutes() {
   return (
@@ -11,6 +12,7 @@ export function AppRoutes() {
         <Route path="/" element={<HomePage />} />
         <Route path="/courses" element={<Courses />} />
         <Route path="/courses/:id" element={<CourseDetailsPage />} />
+        <Route path="/courses/:id/start-round" element={<StartRound />} />
         {/* TODO: <Route path="*" element={<NotFound />} /> */}
       </Route>
     </Routes>
