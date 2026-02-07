@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { AppLayout } from "./AppLayout";
 import HomePage from "../pages/HomePage";
 import Courses from "../pages/Courses";
@@ -13,7 +13,7 @@ export function AppRoutes() {
         <Route path="/courses" element={<Courses />} />
         <Route path="/courses/:id" element={<CourseDetailsPage />} />
         <Route path="/courses/:id/start-round" element={<StartRound />} />
-        {/* TODO: <Route path="*" element={<NotFound />} /> */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
   );
