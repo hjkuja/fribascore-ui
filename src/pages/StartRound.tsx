@@ -1,63 +1,72 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { dummyCourses } from "../data/dummyCourses";
+import { getCourses } from "../utils/db";
 import CourseNotFound from "../components/CourseNotFound/CourseNotFound";
+import type { Course } from "../types/course";
 
 export default function StartRound() {
   const { id } = useParams<"id">();
-  const course = id ? dummyCourses.find((c) => c.id === id) : undefined;
+  const [currentCourse, setCurrentCourse] = useState<Course | undefined>();
 
-  const [players, setPlayers] = useState<string[]>([""]);
+  const [players, setPlayers] = useState<string[]>([]);
+  const [newPlayer, setNewPlayer] = useState<string>("");
 
-  if (!course) {
+  useEffect(() => {
+    const loadCourse = async () => {
+      const courses = await getCourses();
+      const found = id ? courses.find((c) => c.id === id) : undefined;
+      setCurrentCourse(found);
+    };
+    loadCourse();
+  }, [id]);
+
+  if (!currentCourse) {
     return <CourseNotFound />;
   }
 
   const addPlayer = () => {
-    if (players.length < 6) {
-      setPlayers([...players, ""]);
+    const trimmed = newPlayer.trim();
+    if (trimmed !== "" && players.length < 6) {
+      setPlayers([...players, trimmed]);
+      setNewPlayer("");
     }
-  };
-
-  const updatePlayer = (index: number, name: string) => {
-    const newPlayers = [...players];
-    newPlayers[index] = name;
-    setPlayers(newPlayers);
   };
 
   const removePlayer = (index: number) => {
-    if (players.length > 1) {
-      setPlayers(players.filter((_, i) => i !== index));
-    }
+    setPlayers(players.filter((_, i) => i !== index));
   };
-
-  const validPlayers = players.filter(p => p.trim() !== "");
 
   return (
     <div>
       <p className="page-back">
-        <Link to={`/courses/${course.id}`}>← {course.name}</Link>
+        <Link to={`/courses/${currentCourse.id}`}>← {currentCourse.name}</Link>
       </p>
-      <h1>Start Round on {course.name}</h1>
+      <h1>Start Round on {currentCourse.name}</h1>
       <p>Select players (up to 6):</p>
-      {players.map((player, index) => (
-        <div key={index}>
+      {players.length > 0 && (
+        <ul>
+          {players.map((player, index) => (
+            <li key={index}>
+              {player} <button onClick={() => removePlayer(index)}>Remove</button>
+            </li>
+          ))}
+        </ul>
+      )}
+      {players.length < 6 && (
+        <div>
           <input
             type="text"
-            value={player}
-            onChange={(e) => updatePlayer(index, e.target.value)}
-            placeholder={`Player ${index + 1} name`}
+            value={newPlayer}
+            onChange={(e) => setNewPlayer(e.target.value)}
+            placeholder={`Player ${players.length + 1} name`}
           />
-          {players.length > 1 && (
-            <button onClick={() => removePlayer(index)}>Remove</button>
-          )}
+          <button onClick={addPlayer} disabled={newPlayer.trim() === ""}>
+            Add Player
+          </button>
         </div>
-      ))}
-      {players.length < 6 && (
-        <button onClick={addPlayer}>Add Player</button>
       )}
       <p>
-        <button disabled={validPlayers.length === 0}>Start Round</button>
+        <button disabled={players.length === 0}>Start Round</button>
       </p>
     </div>
   );
