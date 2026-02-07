@@ -1,13 +1,24 @@
+import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { CourseDetails } from "../components/CourseDetails/CourseDetails";
-import { dummyCourses } from "../data/dummyCourses";
+import { getCourses } from "../utils/db";
 import CourseNotFound from "../components/CourseNotFound/CourseNotFound";
+import type { Course } from "../types/course";
 
 export default function CourseDetailsPage() {
   const { id } = useParams<"id">();
-  const course = id ? dummyCourses.find((c) => c.id === id) : undefined;
+  const [curseCourse, setCurrentCourse] = useState<Course | undefined>();
 
-  if (!course) {
+  useEffect(() => {
+    const loadCourse = async () => {
+      const courses = await getCourses();
+      const found = id ? courses.find((c) => c.id === id) : undefined;
+      setCurrentCourse(found);
+    };
+    loadCourse();
+  }, [id]);
+
+  if (!curseCourse) {
     return <CourseNotFound />;
   }
 
@@ -16,7 +27,7 @@ export default function CourseDetailsPage() {
       <p className="page-back">
         <Link to="/courses">← Courses</Link>
       </p>
-      <CourseDetails course={course} />
+      <CourseDetails course={curseCourse} />
     </div>
   );
 }
