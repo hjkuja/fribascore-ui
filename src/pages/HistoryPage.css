@@ -1,0 +1,56 @@
+.history-page {
+  margin: 1rem 0;
+}
+
+.history-page__empty {
+  opacity: 0.75;
+}
+
+.history-page__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.history-page__item {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.history-page__item:first-child {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.history-page__link {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0.75rem 0.25rem;
+  text-decoration: none;
+  color: inherit;
+  gap: 0.2rem;
+}
+
+.history-page__link:hover .history-page__course-name {
+  text-decoration: underline;
+}
+
+.history-page__course-name {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.history-page__meta {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+@media (prefers-color-scheme: light) {
+  .history-page__item {
+    border-bottom-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .history-page__item:first-child {
+    border-top-color: rgba(0, 0, 0, 0.1);
+  }
+}

@@ -5,6 +5,7 @@ import "./AppLayout.css";
 const baseNavItems = [
   { to: "/", label: "Home" },
   { to: "/courses", label: "Courses" },
+  { to: "/history", label: "History" },
 ];
 
 // Add development-only nav items
