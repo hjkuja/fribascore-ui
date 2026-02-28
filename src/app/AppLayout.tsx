@@ -2,10 +2,15 @@ import { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 import "./AppLayout.css";
 
-const navItems = [
+const baseNavItems = [
   { to: "/", label: "Home" },
   { to: "/courses", label: "Courses" },
 ];
+
+// Add development-only nav items
+const navItems = import.meta.env.DEV
+  ? [...baseNavItems, { to: "/__admin", label: "Admin" }]
+  : baseNavItems;
 
 export function AppLayout() {
   const [menuOpen, setMenuOpen] = useState(false);

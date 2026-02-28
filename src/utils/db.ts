@@ -19,6 +19,8 @@ interface FribaDB extends DBSchema {
   };
 }
 
+export type StoreName = 'courses' | 'rounds' | 'players';
+
 const dbPromise = openDB<FribaDB>('fribascore', 1, {
   upgrade(db) {
     if (!db.objectStoreNames.contains('courses')) {
@@ -74,4 +76,43 @@ export async function savePlayer(player: Player) {
 export async function getPlayers(): Promise<Player[]> {
   const db = await dbPromise;
   return db.getAll('players');
+}
+
+export async function addPlayer(name = ''): Promise<Player> {
+  const id = (globalThis.crypto && typeof globalThis.crypto.randomUUID === 'function')
+    ? globalThis.crypto.randomUUID()
+    : 'id-' + Math.random().toString(36).slice(2, 9);
+  const player: Player = { id, name };
+  await savePlayer(player);
+  return player;
+}
+
+export async function deletePlayer(id: string): Promise<void> {
+  const db = await dbPromise;
+  await db.delete('players', id);
+}
+
+export async function clearStore(storeName: StoreName) {
+  const db = await dbPromise;
+  const tx = db.transaction(storeName, 'readwrite');
+  tx.objectStore(storeName).clear();
+  await tx.done;
+}
+
+export async function clearAllData() {
+  const db = await dbPromise;
+  const tx = db.transaction(['courses', 'rounds', 'players'], 'readwrite');
+  tx.objectStore('courses').clear();
+  tx.objectStore('rounds').clear();
+  tx.objectStore('players').clear();
+  await tx.done;
+}
+
+export async function deleteDatabase() {
+  // close DB by opening a connection then closing, then delete
+  const DB_NAME = 'fribascore';
+  (await dbPromise).close();
+  // dynamic import to access deleteDB
+  const { deleteDB } = await import('idb');
+  await deleteDB(DB_NAME);
 }

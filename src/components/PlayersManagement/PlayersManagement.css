@@ -1,0 +1,33 @@
+.players-management {
+    padding: 8px;
+}
+
+.players-management__row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.players-management__input {
+    padding: 6px 8px;
+    font-size: 14px;
+}
+
+.players-management__delete {
+    background: #242424;
+    color: #df0000;
+    border: 1px solid #ff8888;
+    padding: 6px 8px;
+}
+
+.players-management__add {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    align-items: center;
+}
+
+.players-management__addbtn {
+    padding: 6px 10px;
+}
