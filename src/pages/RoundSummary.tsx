@@ -44,10 +44,14 @@ export default function RoundSummary() {
       return [];
     }
 
+    const scoresByPlayerId = new Map<string, number>();
+    for (const score of round.scores) {
+      const currentTotal = scoresByPlayerId.get(score.playerId) ?? 0;
+      scoresByPlayerId.set(score.playerId, currentTotal + score.score);
+    }
+
     return round.players.map((player) => {
-      const totalScore = round.scores
-        .filter((score) => score.playerId === player.id)
-        .reduce((sum, score) => sum + score.score, 0);
+      const totalScore = scoresByPlayerId.get(player.id) ?? 0;
 
       return {
         id: player.id,
