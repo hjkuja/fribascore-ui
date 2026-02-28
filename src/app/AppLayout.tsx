@@ -6,6 +6,7 @@ const baseNavItems = [
   { to: "/", label: "Home" },
   { to: "/courses", label: "Courses" },
   { to: "/history", label: "History" },
+  { to: "/settings", label: "Settings" },
 ];
 
 // Add development-only nav items
