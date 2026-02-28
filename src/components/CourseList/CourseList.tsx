@@ -10,10 +10,6 @@ function formatHoleCount(count: number): string {
   return count === 1 ? "1 hole" : `${count} holes`;
 }
 
-function totalLength(holes: Course["holes"]): number {
-  return holes.reduce((sum, h) => sum + h.length, 0);
-}
-
 export function CourseList({ courses }: CourseListProps) {
   if (courses.length === 0) {
     return (
@@ -28,7 +24,7 @@ export function CourseList({ courses }: CourseListProps) {
           <Link to={`/courses/${course.id}`} className="course-list__card">
             <h2 className="course-list__name">{course.name}</h2>
             <p className="course-list__meta">
-              {formatHoleCount(course.holes.length)} · {totalLength(course.holes)} m total
+              {formatHoleCount(course.holes.length)} · {course.totalLength} m total
             </p>
           </Link>
         </li>

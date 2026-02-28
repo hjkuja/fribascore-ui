@@ -30,7 +30,9 @@ export default function RoundScoring() {
   };
 
   const handleRoundFinished = () => {
-    navigate("/");
+    if (round) {
+      navigate(`/rounds/${round.id}/summary`);
+    }
   };
 
   if (!round || !course) {

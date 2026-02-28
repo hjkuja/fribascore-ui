@@ -6,18 +6,12 @@ interface CourseDetailsProps {
   course: Course;
 }
 
-function totalLength(holes: Course["holes"]): number {
-  return holes.reduce((sum, h) => sum + h.length, 0);
-}
-
 export function CourseDetails({ course }: CourseDetailsProps) {
-  const total = totalLength(course.holes);
-
   return (
     <article className="course-details" aria-label={`Course: ${course.name}`}>
       <h1 className="course-details__name">{course.name}</h1>
       <p className="course-details__meta">
-        {course.holes.length} {course.holes.length === 1 ? "hole" : "holes"} · {total} m total
+        {course.holes.length} {course.holes.length === 1 ? "hole" : "holes"} · {course.totalLength} m total
       </p>
 
       <p>

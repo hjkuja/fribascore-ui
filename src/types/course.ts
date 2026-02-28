@@ -5,9 +5,11 @@ export interface Hole {
   length: number; // meters
 }
 
-/** Course — name, holes */
+/** Course — name, holes, pre-calculated totals */
 export interface Course {
   id: string;
   name: string;
   holes: Hole[];
+  totalPar: number;
+  totalLength: number; // meters
 }
