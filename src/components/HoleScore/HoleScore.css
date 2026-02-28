@@ -1,0 +1,19 @@
+.hole-score table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.hole-score th,
+.hole-score td {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.hole-score th {
+  background-color: #242424;
+}
+
+.hole-score__input {
+  width: 60px;
+}

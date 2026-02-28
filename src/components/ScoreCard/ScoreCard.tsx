@@ -2,6 +2,7 @@ import { useState } from "react";
 import { saveRound } from "../../utils/db";
 import type { Round } from "../../types/round";
 import type { Course } from "../../types/course";
+import { HoleScore } from "../HoleScore/HoleScore";
 
 interface ScoreCardProps {
   round: Round;
@@ -78,35 +79,12 @@ export function ScoreCard({ round, course, onRoundUpdate, onRoundFinished }: Sco
       </div>
 
       {selectedHole && (
-        <div>
-          <h2>Hole {selectedHole.number}</h2>
-          <p>Par: {selectedHole.par} | Length: {selectedHole.length} m</p>
-
-          <table>
-            <thead>
-              <tr>
-                <th>Player</th>
-                <th>Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              {round.players.map(player => (
-                <tr key={player.id}>
-                  <td>{player.name}</td>
-                  <td>
-                    <input
-                      type="number"
-                      min="1"
-                      value={getScore(player.id, selectedHole.number)}
-                      onChange={(e) => updateScore(player.id, selectedHole.number, parseInt(e.target.value) || 0)}
-                      style={{ width: "60px" }}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <HoleScore
+          hole={selectedHole}
+          players={round.players}
+          getScore={getScore}
+          onScoreChange={updateScore}
+        />
       )}
     </div>
   );
