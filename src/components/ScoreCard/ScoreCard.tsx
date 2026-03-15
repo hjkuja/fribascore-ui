@@ -3,6 +3,7 @@ import { saveRound } from "../../utils/db";
 import type { Round } from "../../types/round";
 import type { Course } from "../../types/course";
 import { HoleScore } from "../HoleScore/HoleScore";
+import "./ScoreCard.css";
 
 interface ScoreCardProps {
   round: Round;
@@ -52,14 +53,14 @@ export function ScoreCard({ round, course, onRoundUpdate, onRoundFinished }: Sco
 
   return (
     <div className="score-card">
-      <div style={{ marginBottom: "20px" }}>
+      <div className="score-card__navigation">
         <button onClick={goToPreviousHole} disabled={currentHoleIndex === 0}>
           Previous Hole
         </button>
         <select
           value={selectedHoleNumber}
           onChange={(e) => setSelectedHoleNumber(parseInt(e.target.value))}
-          style={{ margin: "0 10px" }}
+          className="score-card__hole-select"
         >
           {course.holes.map(hole => (
             <option key={hole.number} value={hole.number}>
@@ -67,15 +68,6 @@ export function ScoreCard({ round, course, onRoundUpdate, onRoundFinished }: Sco
             </option>
           ))}
         </select>
-        {currentHoleIndex === course.holes.length - 1 ? (
-          <button onClick={finishRound}>
-            Finish Round
-          </button>
-        ) : (
-          <button onClick={goToNextHole}>
-            Next Hole
-          </button>
-        )}
       </div>
 
       {selectedHole && (
@@ -86,6 +78,18 @@ export function ScoreCard({ round, course, onRoundUpdate, onRoundFinished }: Sco
           onScoreChange={updateScore}
         />
       )}
+
+      <div className="score-card__advance">
+        {currentHoleIndex === course.holes.length - 1 ? (
+          <button onClick={finishRound}>
+            Finish Round
+          </button>
+        ) : (
+          <button onClick={goToNextHole}>
+            Next Hole
+          </button>
+        )}
+      </div>
     </div>
   );
 }

@@ -1,3 +1,15 @@
 .score-card {
   margin: 1rem 0;
 }
+
+.score-card__navigation {
+  margin-bottom: 1rem;
+}
+
+.score-card__hole-select {
+  margin: 0 0.625rem;
+}
+
+.score-card__advance {
+  margin-top: 1rem;
+}

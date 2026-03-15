@@ -4,6 +4,7 @@ import { getRounds, getCourses } from "../utils/db";
 import { ScoreCard } from "../components/ScoreCard/ScoreCard";
 import type { Round } from "../types/round";
 import type { Course } from "../types/course";
+import "./RoundScoring.css";
 
 export default function RoundScoring() {
   const { id } = useParams<"id">();
@@ -44,8 +45,8 @@ export default function RoundScoring() {
       <h1>Scoring Round on {course.name}</h1>
       <p>Players: {round.players.map(p => p.name).join(", ")}</p>
       <ScoreCard round={round} course={course} onRoundUpdate={handleRoundUpdate} onRoundFinished={handleRoundFinished} />
-      <p>
-        <Link to="/">Back to Home</Link>
+      <p className="page-back round-scoring__back">
+        <Link to="/">← Back to Home</Link>
       </p>
     </div>
   );
