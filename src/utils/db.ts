@@ -1,4 +1,5 @@
-import type { DBSchema } from 'idb';
+import { openDB, deleteDB } from 'idb';
+import type { DBSchema, IDBPDatabase } from 'idb';
 import type { Course } from '../types/course';
 import type { Player } from '../types/player';
 import type { Round } from '../types/round';
@@ -20,25 +21,30 @@ interface FribaDB extends DBSchema {
 
 export type StoreName = 'courses' | 'rounds' | 'players';
 
-const { openDB } = await import('idb');
+let _dbPromise: Promise<IDBPDatabase<FribaDB>> | null = null;
 
-const dbPromise = openDB<FribaDB>('fribascore', 1, {
-  upgrade(db) {
-    if (!db.objectStoreNames.contains('courses')) {
-      db.createObjectStore('courses', { keyPath: 'id' });
-    }
-    if (!db.objectStoreNames.contains('rounds')) {
-      db.createObjectStore('rounds', { keyPath: 'id' });
-    }
-    if (!db.objectStoreNames.contains('players')) {
-      db.createObjectStore('players', { keyPath: 'id' });
-    }
-    // syncQueue can be added later
-  },
-});
+function getDB(): Promise<IDBPDatabase<FribaDB>> {
+  if (!_dbPromise) {
+    _dbPromise = openDB<FribaDB>('fribascore', 1, {
+      upgrade(db) {
+        if (!db.objectStoreNames.contains('courses')) {
+          db.createObjectStore('courses', { keyPath: 'id' });
+        }
+        if (!db.objectStoreNames.contains('rounds')) {
+          db.createObjectStore('rounds', { keyPath: 'id' });
+        }
+        if (!db.objectStoreNames.contains('players')) {
+          db.createObjectStore('players', { keyPath: 'id' });
+        }
+        // syncQueue can be added later
+      },
+    });
+  }
+  return _dbPromise;
+}
 
-async function seedCourses(courses: Course[]) { 
-  const db = await dbPromise;
+async function seedCourses(courses: Course[]) {
+  const db = await getDB();
   const tx = db.transaction('courses', 'readwrite');
   for (const course of courses) {
     await tx.store.put(course);
@@ -55,27 +61,27 @@ export async function seedDummyCourses(courses: Course[]) {
 }
 
 export async function getCourses(): Promise<Course[]> {
-  const db = await dbPromise;
+  const db = await getDB();
   return db.getAll('courses');
 }
 
 export async function saveRound(round: Round) {
-  const db = await dbPromise;
+  const db = await getDB();
   await db.put('rounds', round);
 }
 
 export async function getRounds(): Promise<Round[]> {
-  const db = await dbPromise;
+  const db = await getDB();
   return db.getAll('rounds');
 }
 
 export async function savePlayer(player: Player) {
-  const db = await dbPromise;
+  const db = await getDB();
   await db.put('players', player);
 }
 
 export async function getPlayers(): Promise<Player[]> {
-  const db = await dbPromise;
+  const db = await getDB();
   return db.getAll('players');
 }
 
@@ -89,19 +95,19 @@ export async function addPlayer(name = ''): Promise<Player> {
 }
 
 export async function deletePlayer(id: string): Promise<void> {
-  const db = await dbPromise;
+  const db = await getDB();
   await db.delete('players', id);
 }
 
 export async function clearStore(storeName: StoreName) {
-  const db = await dbPromise;
+  const db = await getDB();
   const tx = db.transaction(storeName, 'readwrite');
   tx.objectStore(storeName).clear();
   await tx.done;
 }
 
 export async function clearAllData() {
-  const db = await dbPromise;
+  const db = await getDB();
   const tx = db.transaction(['courses', 'rounds', 'players'], 'readwrite');
   tx.objectStore('courses').clear();
   tx.objectStore('rounds').clear();
@@ -112,8 +118,7 @@ export async function clearAllData() {
 export async function deleteDatabase() {
   // close DB by opening a connection then closing, then delete
   const DB_NAME = 'fribascore';
-  (await dbPromise).close();
-  // dynamic import to access deleteDB
-  const { deleteDB } = await import('idb');
+  (await getDB()).close();
+  _dbPromise = null;
   await deleteDB(DB_NAME);
 }
