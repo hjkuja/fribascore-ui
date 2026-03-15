@@ -10,10 +10,6 @@
   text-align: center;
 }
 
-.hole-score th {
-  background-color: #242424;
-}
-
 .hole-score__input {
   width: 60px;
 }
