@@ -54,13 +54,11 @@ export function ScoreCard({ round, course, onRoundUpdate, onRoundFinished }: Sco
   return (
     <div className="score-card">
       <div className="score-card__navigation">
-        <button onClick={goToPreviousHole} disabled={currentHoleIndex === 0}>
-          Previous Hole
-        </button>
         <select
           value={selectedHoleNumber}
           onChange={(e) => setSelectedHoleNumber(parseInt(e.target.value))}
           className="score-card__hole-select"
+          aria-label="Select hole"
         >
           {course.holes.map(hole => (
             <option key={hole.number} value={hole.number}>
@@ -68,6 +66,12 @@ export function ScoreCard({ round, course, onRoundUpdate, onRoundFinished }: Sco
             </option>
           ))}
         </select>
+
+        <div className="score-card__prev">
+          <button onClick={goToPreviousHole} disabled={currentHoleIndex === 0}>
+            Previous Hole
+          </button>
+        </div>
       </div>
 
       {selectedHole && (
