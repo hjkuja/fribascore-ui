@@ -3,6 +3,7 @@ import { render } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { CourseList } from "./CourseList";
 import type { Course } from "../../types/course";
+import type { ReactElement } from "react";
 
 const mockCourses: Course[] = [
   {
@@ -24,7 +25,7 @@ const mockCourses: Course[] = [
   },
 ];
 
-function renderWithRouter(ui: React.ReactElement) {
+function renderWithRouter(ui: ReactElement) {
   return render(<MemoryRouter>{ui}</MemoryRouter>);
 }
 
