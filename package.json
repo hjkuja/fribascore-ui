@@ -9,6 +9,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "typecheck": "tsc --noEmit && tsc --noEmit --project tsconfig.test.json",
     "test": "bun test",
     "test:watch": "bun test --watch",
     "test:coverage": "bun test --coverage"
