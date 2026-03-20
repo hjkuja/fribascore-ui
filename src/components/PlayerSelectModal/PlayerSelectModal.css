@@ -1,0 +1,322 @@
+.players-modal__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.players-modal {
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  width: min(480px, 90vw);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.players-modal__header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.players-modal__title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.players-modal__search {
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.players-modal__search-input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  color: inherit;
+  font-size: 0.9375rem;
+}
+
+.players-modal__search-clear {
+  padding: 0.25rem 0.5rem;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  font-size: 0.875rem;
+  line-height: 1;
+}
+
+.players-modal__search-clear:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.players-modal__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  max-height: 60vh;
+  flex: 1 1 auto;
+}
+
+.players-modal__row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.players-modal__row--selected {
+  background: rgba(199, 124, 39, 0.12);
+}
+
+.players-modal__row-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.players-modal__row-label:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.players-modal__checkbox {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  accent-color: var(--main-accent-color);
+}
+
+.players-modal__avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.players-modal__player-name {
+  flex: 1;
+  font-size: 0.9375rem;
+}
+
+.players-modal__player-id {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-family: monospace;
+  flex-shrink: 0;
+}
+
+.players-modal__empty {
+  padding: 1.5rem 1.25rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9375rem;
+}
+
+.players-modal__add-section {
+  padding: 0.75rem 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.players-modal__add-trigger {
+  background: none;
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  width: 100%;
+}
+
+.players-modal__add-trigger:hover {
+  border-color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.players-modal__add-form {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.players-modal__add-input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  color: inherit;
+  font-size: 0.9375rem;
+}
+
+.players-modal__add-save {
+  padding: 0.5rem 0.75rem;
+  background: var(--main-accent-color);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.players-modal__add-save:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.players-modal__add-cancel {
+  padding: 0.5rem 0.75rem;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: inherit;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.players-modal__footer {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  padding: 0.875rem 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.players-modal__cancel {
+  padding: 0.5rem 1rem;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: inherit;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9375rem;
+}
+
+.players-modal__cancel:hover {
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.players-modal__confirm {
+  padding: 0.5rem 1rem;
+  background: var(--main-accent-color);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9375rem;
+}
+
+.players-modal__confirm:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Visually hidden — readable by screen readers via aria-live */
+.players-modal__live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+@media (prefers-color-scheme: light) {
+  .players-modal {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.12);
+  }
+
+  .players-modal__header {
+    border-bottom-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .players-modal__search {
+    border-bottom-color: rgba(0, 0, 0, 0.08);
+  }
+
+  .players-modal__search-input,
+  .players-modal__add-input {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.15);
+  }
+
+  .players-modal__search-clear {
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  .players-modal__search-clear:hover {
+    color: rgba(0, 0, 0, 0.8);
+  }
+
+  .players-modal__row {
+    border-bottom-color: rgba(0, 0, 0, 0.06);
+  }
+
+  .players-modal__row-label:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  .players-modal__row--selected {
+    background: rgba(199, 124, 39, 0.1);
+  }
+
+  .players-modal__player-id {
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+  .players-modal__empty {
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  .players-modal__add-section {
+    border-top-color: rgba(0, 0, 0, 0.08);
+  }
+
+  .players-modal__add-trigger {
+    border-color: rgba(0, 0, 0, 0.2);
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .players-modal__add-trigger:hover {
+    border-color: rgba(0, 0, 0, 0.4);
+    color: rgba(0, 0, 0, 0.85);
+  }
+
+  .players-modal__add-cancel {
+    border-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .players-modal__footer {
+    border-top-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .players-modal__cancel {
+    border-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .players-modal__cancel:hover {
+    border-color: rgba(0, 0, 0, 0.4);
+  }
+}
