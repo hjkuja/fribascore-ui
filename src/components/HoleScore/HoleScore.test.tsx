@@ -1,5 +1,5 @@
 import { describe, expect, test, mock } from "bun:test";
-import { render } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 import { HoleScore } from "./HoleScore";
 import type { Hole } from "../../types/course";
 import type { Player } from "../../types/player";
@@ -75,6 +75,36 @@ describe("HoleScore", () => {
       />
     );
     expect(getByText(/150 m/)).toBeDefined();
+  });
+
+  test("calls onScoreChange with correct args when input changes", () => {
+    const onScoreChange = mock();
+    const { getAllByRole } = render(
+      <HoleScore
+        hole={mockHole}
+        players={mockPlayers}
+        getScore={() => ""}
+        onScoreChange={onScoreChange}
+      />
+    );
+    const inputs = getAllByRole("spinbutton");
+    fireEvent.change(inputs[0], { target: { value: "5" } });
+    expect(onScoreChange).toHaveBeenCalledWith("player-1", 3, 5);
+  });
+
+  test("calls onScoreChange with 0 when input value parses to zero", () => {
+    const onScoreChange = mock();
+    const { getAllByRole } = render(
+      <HoleScore
+        hole={mockHole}
+        players={mockPlayers}
+        getScore={() => ""}
+        onScoreChange={onScoreChange}
+      />
+    );
+    const inputs = getAllByRole("spinbutton");
+    fireEvent.change(inputs[0], { target: { value: "0" } });
+    expect(onScoreChange).toHaveBeenCalledWith("player-1", 3, 0);
   });
 });
 
