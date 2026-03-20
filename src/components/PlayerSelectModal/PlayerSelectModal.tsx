@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type { KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { addPlayer as dbAddPlayer } from '../../utils/db';
 import './PlayerSelectModal.css';
@@ -48,13 +49,14 @@ export function PlayerSelectModal({
   const [portalRoot] = useState<HTMLElement>(() => document.createElement('div'));
 
   useEffect(() => {
+    if (!isOpen) return;
     document.body.appendChild(portalRoot);
     return () => {
       if (document.body.contains(portalRoot)) {
         document.body.removeChild(portalRoot);
       }
     };
-  }, [portalRoot]);
+  }, [isOpen, portalRoot]);
 
   // Reset state only when modal transitions from closed → open
   useEffect(() => {
@@ -144,7 +146,7 @@ export function PlayerSelectModal({
   }, [localPlayers, selectedIds, onConfirm]);
 
   // In-dialog key handling: Arrow keys navigate checkboxes, Enter confirms
-  const handleDialogKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleDialogKeyDown = (e: ReactKeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
       const checkboxes = Array.from(
         dialogRef.current?.querySelectorAll<HTMLElement>('input[type="checkbox"]') ?? [],
@@ -284,6 +286,7 @@ export function PlayerSelectModal({
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') handleAddNew();
                     if (e.key === 'Escape') {
+                      e.stopPropagation();
                       setShowAddForm(false);
                       setNewPlayerName('');
                     }
