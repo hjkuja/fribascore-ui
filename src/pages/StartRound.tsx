@@ -54,8 +54,21 @@ export default function StartRound() {
     // Re-fetch from DB so any players added inside the modal are included
     const latest = await getPlayers();
     setAllDbPlayers(latest);
-    const confirmed = latest.filter((p) => selectedIds.includes(p.id));
-    setPlayers(confirmed.slice(0, MAX_PLAYERS_PER_ROUND));
+
+    const playerById = new Map<string, Player>(latest.map((player) => [player.id, player]));
+    const confirmed: Player[] = [];
+
+    for (const id of selectedIds) {
+      const player = playerById.get(id);
+      if (player) {
+        confirmed.push(player);
+        if (confirmed.length >= MAX_PLAYERS_PER_ROUND) {
+          break;
+        }
+      }
+    }
+
+    setPlayers(confirmed);
     setModalOpen(false);
   };
 
