@@ -135,6 +135,7 @@ export default function StartRound() {
         onConfirm={handleModalConfirm}
         onClose={() => setModalOpen(false)}
         allowAddNew
+        maxSelectable={MAX_PLAYERS_PER_ROUND}
       />
     </div>
   );

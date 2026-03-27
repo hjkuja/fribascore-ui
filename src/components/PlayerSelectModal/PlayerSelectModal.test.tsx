@@ -457,4 +457,99 @@ describe('PlayerSelectModal', () => {
     // Alice should be pre-selected again
     expect((screen.getByLabelText('Select Alice') as HTMLInputElement).checked).toBe(true);
   });
+
+  // ---------------------------------------------------------------------------
+  // maxSelectable — counter and disabled checkboxes
+  // ---------------------------------------------------------------------------
+
+  test('shows X/max counter when maxSelectable is provided', () => {
+    render(
+      <PlayerSelectModal
+        isOpen
+        players={PLAYERS}
+        preselectedIds={['player-1']}
+        onConfirm={onConfirm}
+        onClose={onClose}
+        maxSelectable={3}
+      />,
+    );
+    expect(screen.getByLabelText('1 of 3 players selected')).toBeDefined();
+  });
+
+  test('does not show counter when maxSelectable is not provided', () => {
+    render(
+      <PlayerSelectModal
+        isOpen
+        players={PLAYERS}
+        preselectedIds={['player-1']}
+        onConfirm={onConfirm}
+        onClose={onClose}
+      />,
+    );
+    expect(screen.queryByLabelText(/of .* players selected/)).toBeNull();
+  });
+
+  test('counter reflects current selection count', () => {
+    render(
+      <PlayerSelectModal
+        isOpen
+        players={PLAYERS}
+        preselectedIds={['player-1', 'player-2']}
+        onConfirm={onConfirm}
+        onClose={onClose}
+        maxSelectable={3}
+      />,
+    );
+    expect(screen.getByLabelText('2 of 3 players selected')).toBeDefined();
+  });
+
+  test('unselected checkboxes are disabled when max is reached', () => {
+    render(
+      <PlayerSelectModal
+        isOpen
+        players={PLAYERS}
+        preselectedIds={['player-1', 'player-2']}
+        onConfirm={onConfirm}
+        onClose={onClose}
+        maxSelectable={2}
+      />,
+    );
+    // Charlie is not selected — should be disabled
+    const charlieCheckbox = screen.getByLabelText('Select Charlie') as HTMLInputElement;
+    expect(charlieCheckbox.disabled).toBe(true);
+  });
+
+  test('selected checkboxes remain enabled when max is reached', () => {
+    render(
+      <PlayerSelectModal
+        isOpen
+        players={PLAYERS}
+        preselectedIds={['player-1', 'player-2']}
+        onConfirm={onConfirm}
+        onClose={onClose}
+        maxSelectable={2}
+      />,
+    );
+    const aliceCheckbox = screen.getByLabelText('Select Alice') as HTMLInputElement;
+    const bobCheckbox = screen.getByLabelText('Select Bob') as HTMLInputElement;
+    expect(aliceCheckbox.disabled).toBe(false);
+    expect(bobCheckbox.disabled).toBe(false);
+  });
+
+  test('checkboxes are re-enabled after deselecting a player below max', () => {
+    render(
+      <PlayerSelectModal
+        isOpen
+        players={PLAYERS}
+        preselectedIds={['player-1', 'player-2']}
+        onConfirm={onConfirm}
+        onClose={onClose}
+        maxSelectable={2}
+      />,
+    );
+    // Deselect Alice to go back under the limit
+    fireEvent.click(screen.getByLabelText('Select Alice'));
+    const charlieCheckbox = screen.getByLabelText('Select Charlie') as HTMLInputElement;
+    expect(charlieCheckbox.disabled).toBe(false);
+  });
 });
