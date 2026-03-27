@@ -157,6 +157,35 @@ describe('PlayerSelectModal', () => {
     expect((screen.getByLabelText('Select Bob') as HTMLInputElement).checked).toBe(false);
   });
 
+  test('unknown preselectedIds (not in players list) are ignored on open', () => {
+    render(
+      <PlayerSelectModal
+        isOpen
+        players={PLAYERS}
+        preselectedIds={['unknown-id', 'player-1']}
+        onConfirm={onConfirm}
+        onClose={onClose}
+      />,
+    );
+    // Only Alice (player-1) should be checked; the unknown ID is silently dropped
+    expect((screen.getByLabelText('Select Alice') as HTMLInputElement).checked).toBe(true);
+    // Confirm button should show count of 1, not 2
+    expect((screen.getByText('Confirm (1)') as HTMLButtonElement).disabled).toBe(false);
+  });
+
+  test('all-unknown preselectedIds leave nothing selected and Confirm disabled', () => {
+    render(
+      <PlayerSelectModal
+        isOpen
+        players={PLAYERS}
+        preselectedIds={['unknown-id']}
+        onConfirm={onConfirm}
+        onClose={onClose}
+      />,
+    );
+    expect((screen.getByText('Confirm (0)') as HTMLButtonElement).disabled).toBe(true);
+  });
+
   test('clicking a checkbox selects the player', () => {
     render(<PlayerSelectModal isOpen players={PLAYERS} onConfirm={onConfirm} onClose={onClose} />);
     const checkbox = screen.getByLabelText('Select Alice') as HTMLInputElement;

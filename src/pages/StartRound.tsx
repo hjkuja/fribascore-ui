@@ -117,9 +117,15 @@ export default function StartRound() {
           </button>
         </div>
       )}
-      {allDbPlayers.length > 0 && (
+      {(allDbPlayers.length > 0 || players.length > 0) && (
         <p>
-          <button onClick={() => setModalOpen(true)}>
+          <button onClick={async () => {
+            // Persist any manually-typed players so they appear in the modal list
+            await Promise.all(players.map((player) => savePlayer(player)));
+            const latest = await getPlayers();
+            setAllDbPlayers(latest);
+            setModalOpen(true);
+          }}>
             Select from existing players
           </button>
         </p>

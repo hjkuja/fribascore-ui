@@ -64,7 +64,9 @@ export function PlayerSelectModal({
   useEffect(() => {
     if (isOpen && !prevIsOpenRef.current) {
       setLocalPlayers(players);
-      setSelectedIds(new Set(preselectedIds ?? []));
+      // Only pre-select IDs that actually exist in the players list
+      const availableIds = new Set(players.map((p) => p.id));
+      setSelectedIds(new Set((preselectedIds ?? []).filter((id) => availableIds.has(id))));
       setFilter('');
       setDebouncedFilter('');
       setShowAddForm(false);
