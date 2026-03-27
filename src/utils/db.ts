@@ -102,7 +102,7 @@ export async function deletePlayer(id: string): Promise<void> {
 export async function clearStore(storeName: StoreName) {
   const db = await getDB();
   const tx = db.transaction(storeName, 'readwrite');
-  tx.objectStore(storeName).clear();
+  await tx.objectStore(storeName).clear();
   await tx.done;
 }
 
