@@ -92,6 +92,7 @@ export function PlayerSelectModal({
   // Global key handlers: Escape closes, Tab implements focus trap
   const handleGlobalKeyDown = useCallback(
     (e: KeyboardEvent) => {
+      if (e.defaultPrevented) return;
       if (e.key === 'Escape') {
         onClose();
         return;
@@ -286,6 +287,7 @@ export function PlayerSelectModal({
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') handleAddNew();
                     if (e.key === 'Escape') {
+                      e.preventDefault();
                       e.stopPropagation();
                       setShowAddForm(false);
                       setNewPlayerName('');
