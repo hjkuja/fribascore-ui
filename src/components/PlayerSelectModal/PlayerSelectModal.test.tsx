@@ -245,18 +245,19 @@ describe('PlayerSelectModal', () => {
     expect(screen.getByText('Confirm (2)')).toBeDefined();
   });
 
-  test('onConfirm is called with selected IDs in players-list order', () => {
+  test('onConfirm preserves preselectedIds order (not players-list order)', () => {
     render(
       <PlayerSelectModal
         isOpen
         players={PLAYERS}
-        preselectedIds={['player-3', 'player-1']} // deliberately reversed
+        preselectedIds={['player-3', 'player-1']} // deliberately reversed vs source order
         onConfirm={onConfirm}
         onClose={onClose}
       />,
     );
     fireEvent.click(screen.getByText(/Confirm/));
-    expect(onConfirm).toHaveBeenCalledWith(['player-1', 'player-3']);
+    // Returns in preselectedIds (Set insertion) order, not source-array order
+    expect(onConfirm).toHaveBeenCalledWith(['player-3', 'player-1']);
   });
 
   test('onConfirm includes newly toggled players', () => {

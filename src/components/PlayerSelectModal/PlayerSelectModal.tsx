@@ -148,9 +148,10 @@ export function PlayerSelectModal({
   };
 
   const handleConfirm = useCallback(() => {
-    const orderedIds = localPlayers.filter((p) => selectedIds.has(p.id)).map((p) => p.id);
-    onConfirm(orderedIds);
-  }, [localPlayers, selectedIds, onConfirm]);
+    // Return IDs in Set insertion order: pre-selected IDs keep their original order,
+    // newly checked IDs are appended in the order the user clicked them.
+    onConfirm(Array.from(selectedIds));
+  }, [selectedIds, onConfirm]);
 
   // In-dialog key handling: Arrow keys navigate checkboxes, Enter confirms
   const handleDialogKeyDown = (e: ReactKeyboardEvent<HTMLDivElement>) => {

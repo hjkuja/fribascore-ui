@@ -96,13 +96,13 @@ export default function StartRound() {
       <h1>Start Round on {currentCourse.name}</h1>
       <p>Select players (up to {MAX_PLAYERS_PER_ROUND}):</p>
       {players.length > 0 && (
-        <ul>
+        <ol>
           {players.map((player, index) => (
             <li key={player.id}>
               {player.name} <button onClick={() => removePlayer(index)}>Remove</button>
             </li>
           ))}
-        </ul>
+        </ol>
       )}
       {players.length < MAX_PLAYERS_PER_ROUND && (
         <div>
