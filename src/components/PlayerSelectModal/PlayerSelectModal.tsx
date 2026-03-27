@@ -17,6 +17,7 @@ interface PlayerSelectModalProps {
   onConfirm: (selectedIds: string[]) => void;
   onClose: () => void;
   allowAddNew?: boolean;
+  maxSelectable?: number;
 }
 
 export function PlayerSelectModal({
@@ -26,6 +27,7 @@ export function PlayerSelectModal({
   onConfirm,
   onClose,
   allowAddNew = false,
+  maxSelectable,
 }: PlayerSelectModalProps) {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(() => new Set(preselectedIds));
   const [filter, setFilter] = useState('');
@@ -132,6 +134,8 @@ export function PlayerSelectModal({
     return localPlayers.filter((p) => p.name.toLowerCase().includes(lower));
   }, [localPlayers, debouncedFilter]);
 
+  const atMax = maxSelectable !== undefined && selectedIds.size >= maxSelectable;
+
   const togglePlayer = (id: string) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
@@ -180,7 +184,10 @@ export function PlayerSelectModal({
     try {
       const player = await dbAddPlayer(trimmed);
       setLocalPlayers((prev) => [...prev, player]);
-      setSelectedIds((prev) => new Set([...prev, player.id]));
+      // Only auto-select the new player if the max hasn't been reached
+      if (!atMax) {
+        setSelectedIds((prev) => new Set([...prev, player.id]));
+      }
       setNewPlayerName('');
       setShowAddForm(false);
     } finally {
@@ -209,6 +216,14 @@ export function PlayerSelectModal({
           <h2 id={titleId} className="players-modal__title">
             Select players
           </h2>
+          {maxSelectable !== undefined && (
+            <span
+              className={`players-modal__counter${atMax ? ' players-modal__counter--at-max' : ''}`}
+              aria-label={`${selectedIds.size} of ${maxSelectable} players selected`}
+            >
+              {selectedIds.size}/{maxSelectable}
+            </span>
+          )}
         </div>
 
         <div className="players-modal__search">
@@ -234,34 +249,39 @@ export function PlayerSelectModal({
         </div>
 
         <ul className="players-modal__list">
-          {filteredPlayers.map((player) => (
-            <li
-              key={player.id}
-              className={`players-modal__row${selectedIds.has(player.id) ? ' players-modal__row--selected' : ''}`}
-            >
-              <label className="players-modal__row-label">
-                <input
-                  type="checkbox"
-                  className="players-modal__checkbox"
-                  checked={selectedIds.has(player.id)}
-                  onChange={() => togglePlayer(player.id)}
-                  aria-label={`Select ${player.name}`}
-                />
-                {player.avatarUrl && (
-                  <img
-                    src={player.avatarUrl}
-                    alt=""
-                    className="players-modal__avatar"
-                    aria-hidden="true"
+          {filteredPlayers.map((player) => {
+            const isSelected = selectedIds.has(player.id);
+            const isDisabled = atMax && !isSelected;
+            return (
+              <li
+                key={player.id}
+                className={`players-modal__row${isSelected ? ' players-modal__row--selected' : ''}${isDisabled ? ' players-modal__row--disabled' : ''}`}
+              >
+                <label className="players-modal__row-label">
+                  <input
+                    type="checkbox"
+                    className="players-modal__checkbox"
+                    checked={isSelected}
+                    onChange={() => togglePlayer(player.id)}
+                    disabled={isDisabled}
+                    aria-label={`Select ${player.name}`}
                   />
-                )}
-                <span className="players-modal__player-name">{player.name}</span>
-                <span className="players-modal__player-id" title={player.id}>
-                  {player.id.slice(0, 8)}…
-                </span>
-              </label>
-            </li>
-          ))}
+                  {player.avatarUrl && (
+                    <img
+                      src={player.avatarUrl}
+                      alt=""
+                      className="players-modal__avatar"
+                      aria-hidden="true"
+                    />
+                  )}
+                  <span className="players-modal__player-name">{player.name}</span>
+                  <span className="players-modal__player-id" title={player.id}>
+                    {player.id.slice(0, 8)}…
+                  </span>
+                </label>
+              </li>
+            );
+          })}
           {filteredPlayers.length === 0 && (
             <li className="players-modal__empty">No players found.</li>
           )}
