@@ -287,10 +287,7 @@ export function PlayerSelectModal({
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') handleAddNew();
                     if (e.key === 'Escape') {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setShowAddForm(false);
-                      setNewPlayerName('');
+                      onClose();
                     }
                   }}
                   placeholder="Player name"
